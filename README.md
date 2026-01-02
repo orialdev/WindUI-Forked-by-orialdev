@@ -9,9 +9,7 @@ A powerful and modern Roblox UI library featuring tabs, sections, key systems, c
 Load the library into your script:
 
 ```lua
-local WindUI = loadstring(game:HttpGet(
-    "https://raw.githubusercontent.com/orialdev/WindUI-Forked-by-orialdev/refs/heads/main/WindUI%20Forked"
-))()
+local WindUI = loadstring(game:HttpGet("https://raw.githubusercontent.com/orialdev/WindUI-Forked-by-orialdev/refs/heads/main/WindUI%20Forked"))()
 ```
 
 ---
@@ -93,11 +91,9 @@ local Tab = Window:Tab({
 ### Tab Methods
 
 ```lua
-Tab:SetBadge("New")
 Tab:Lock()
 Tab:Unlock()
 Tab:Select()
-Tab:ScrollToTheElement(1)
 ```
 
 ---
