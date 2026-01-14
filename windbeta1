@@ -13104,7 +13104,7 @@ do
                         AnchorPoint = Vector2.new(0, 0),
                         ImageColor3 = Color3.fromRGB(255, 255, 255),
                         ZIndex = 3,
-                        ImageTransparency = 0.90,
+                        ImageTransparency = 0.98,
                         Name = "Background",
                         Visible = not au.HidePanelBackground
                     }
