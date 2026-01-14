@@ -12924,15 +12924,15 @@ do
             TopBarButtons = {},
             AllElements = {},
             ElementConfig = {},
-            PendingFlags = {},
-            IsToggleDragging = false
+            PendingFlags = {}
         }
 
         au.UICorner = au.Radius
 
+        -- Refined configuration for rounding elements and fixing tab alignment logic
         au.ElementConfig = {
             UIPadding = 14,
-            UICorner = au.ElementsRadius or 10
+            UICorner = au.ElementsRadius or 24 -- Increased to provide fully rounded tabs/elements
         }
 
         local av = au.Size or UDim2.new(0, 620, 0, 480)
@@ -12973,13 +12973,14 @@ do
             au.AcrylicPaint = ak.AcrylicPaint {UseAcrylic = au.Acrylic}
         end
 
+        -- Resizer Size increased as requested
         local ax =
             am(
             "Frame",
             {
-                Size = UDim2.new(0, 24, 0, 24),
-                Position = UDim2.new(1, -2, 1, -2),
-                AnchorPoint = Vector2.new(0.5, 0.5),
+                Size = UDim2.new(0, 36, 0, 36), -- Increased resizer size
+                Position = UDim2.new(1, 0, 1, 0),
+                AnchorPoint = Vector2.new(1, 1),
                 BackgroundTransparency = 1,
                 ZIndex = 99,
                 Active = true
@@ -12988,11 +12989,11 @@ do
                 am(
                     "ImageLabel",
                     {
-                        Size = UDim2.new(1, 4, 1, 4),
+                        Size = UDim2.new(0, 14, 0, 14),
                         BackgroundTransparency = 1,
                         Image = "rbxassetid://120997033468887",
-                        Position = UDim2.new(0.5, 0, 0.5, 0),
-                        AnchorPoint = Vector2.new(0.5, 0.5),
+                        Position = UDim2.new(1, -4, 1, -4),
+                        AnchorPoint = Vector2.new(1, 1),
                         ImageTransparency = 1,
                         ImageColor3 = Color3.fromRGB(255, 255, 255)
                     }
@@ -13195,7 +13196,7 @@ do
                 },
                 {
                     al.NewRoundFrame(
-                        au.UICorner - 2,
+                        24, -- Set rounding to match fixed tab appearance
                         "SquircleOutline",
                         {
                             Size = UDim2.new(1, 0, 1, 0),
@@ -13217,7 +13218,7 @@ do
                         }
                     ),
                     al.NewRoundFrame(
-                        au.UICorner - 2,
+                        24,
                         "Squircle",
                         {
                             Size = UDim2.new(1, 0, 1, 0),
@@ -14141,8 +14142,11 @@ do
         )
         au.TabModule = B
 
+        -- Rounded tab logic implemented by overriding element parent visual style or using ElementConfig
         function au.Tab(C, F)
             F.Parent = au.UIElements.SideBar.Frame
+            F.AutomaticSize = "None"
+            F.Size = UDim2.new(1, 0, 0, 32) -- Standardize tab sizes as requested
             return B.New(F, at.WindUI.UIScale)
         end
         function au.SelectTab(C, F)
@@ -14505,7 +14509,6 @@ do
         return au
     end
 end
-
 end
 
 local aa = game:GetService "RunService"
