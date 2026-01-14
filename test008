@@ -12877,7 +12877,7 @@ do
             IconThemed = at.IconThemed,
             IconRadius = at.IconRadius or 6,
             Folder = at.Folder,
-            Resizable = false,
+            Resizable = false, -- DISABLED RESIZER
             Background = at.Background,
             BackgroundImageTransparency = at.BackgroundImageTransparency or 0,
             ShadowTransparency = at.ShadowTransparency or 0.6,
@@ -12889,8 +12889,8 @@ do
             MaxSize = at.MaxSize or Vector2.new(900, 600),
             TopBarButtonIconSize = at.TopBarButtonIconSize or 15,
             ToggleKey = at.ToggleKey,
-            ElementsRadius = 14,
-            Radius = 14,
+            ElementsRadius = 14, -- ROUNDED ELEMENTS
+            Radius = 14, -- ROUNDED WINDOW
             Transparent = at.Transparent or false,
             HideSearchBar = at.HideSearchBar ~= false,
             ScrollBarEnabled = at.ScrollBarEnabled or false,
@@ -12909,7 +12909,7 @@ do
             Parent = at.Parent,
             Destroyed = false,
             IsFullscreen = false,
-            CanResize = false,
+            CanResize = false, -- DISABLED RESIZER
             IsOpenButtonEnabled = true,
             CurrentConfig = nil,
             ConfigManager = nil,
@@ -12932,7 +12932,7 @@ do
 
         au.ElementConfig = {
             UIPadding = 14,
-            UICorner = au.ElementsRadius
+            UICorner = au.ElementsRadius -- ROUNDED SIDEBAR TABS/ELEMENTS
         }
 
         local av = au.Size or UDim2.new(0, 620, 0, 480)
@@ -12972,6 +12972,8 @@ do
         if au.Acrylic then
             au.AcrylicPaint = ak.AcrylicPaint {UseAcrylic = au.Acrylic}
         end
+
+        -- REMOVED: Resizer Handle Frame (ax) 
 
         local ay =
             al.NewRoundFrame(
@@ -13891,6 +13893,10 @@ do
 
                             )
                             u:Set(true)
+                            if au.Resizable then
+                                -- REMOVED RESIZE TWEENING
+                                au.CanResize = false
+                            end
                         end
                     )
 
@@ -13957,6 +13963,7 @@ do
                 Enum.EasingStyle.Quint,
                 Enum.EasingDirection.InOut
             ):Play()
+            -- REMOVED RESIZE ICON TWEEN
             u:Set(false)
             au.CanResize = false
 
@@ -14110,11 +14117,8 @@ do
 
         function au.Tab(C, F)
             F.Parent = au.UIElements.SideBar.Frame
-            local tabObj = B.New(F, at.WindUI.UIScale)
-            if tabObj and tabObj.Button and tabObj.Button:FindFirstChild("UICorner") then
-                tabObj.Button.UICorner.CornerRadius = UDim.new(0, au.ElementsRadius)
-            end
-            return tabObj
+            -- SIDEBAR TABS WILL NOW BE ROUNDED ACCORDING TO ElementConfig.UICorner (14)
+            return B.New(F, at.WindUI.UIScale)
         end
         function au.SelectTab(C, F)
             B:SelectTab(F)
@@ -14123,7 +14127,7 @@ do
             return sectMod.New(F, au.UIElements.SideBar.Frame, au.Folder, at.WindUI.UIScale, au)
         end
         function au.IsResizable(C, F)
-            au.Resizable, au.CanResize = false, false
+            au.Resizable, au.CanResize = false, false -- PERMANENTLY OFF
         end
 
         function au.SetPanelBackground(C, F)
@@ -14363,6 +14367,8 @@ do
             end
             return ar:New(H, au.UIElements.Main.Main.Topbar.Center)
         end
+
+        -- REMOVED: Resize mouse input listeners 
 
         local lastClick, doubleClickThresh, doubleClickCount, lastPos = 0, 0.4, 0, nil
         l.Frame.MouseButton1Up:Connect(
