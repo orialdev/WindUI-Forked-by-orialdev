@@ -12877,7 +12877,7 @@ do
             IconThemed = at.IconThemed,
             IconRadius = at.IconRadius or 6,
             Folder = at.Folder,
-            Resizable = false, -- REMOVED RESIZER
+            Resizable = false,
             Background = at.Background,
             BackgroundImageTransparency = at.BackgroundImageTransparency or 0,
             ShadowTransparency = at.ShadowTransparency or 0.6,
@@ -12889,8 +12889,8 @@ do
             MaxSize = at.MaxSize or Vector2.new(900, 600),
             TopBarButtonIconSize = at.TopBarButtonIconSize or 15,
             ToggleKey = at.ToggleKey,
-            ElementsRadius = 14, -- ROUNDED ELEMENTS
-            Radius = 14, -- ROUNDED WINDOW
+            ElementsRadius = 14,
+            Radius = 14,
             Transparent = at.Transparent or false,
             HideSearchBar = at.HideSearchBar ~= false,
             ScrollBarEnabled = at.ScrollBarEnabled or false,
@@ -12909,7 +12909,7 @@ do
             Parent = at.Parent,
             Destroyed = false,
             IsFullscreen = false,
-            CanResize = false, -- REMOVED RESIZER
+            CanResize = false,
             IsOpenButtonEnabled = true,
             CurrentConfig = nil,
             ConfigManager = nil,
@@ -12932,7 +12932,7 @@ do
 
         au.ElementConfig = {
             UIPadding = 14,
-            UICorner = au.ElementsRadius -- APPLIED ROUNDING
+            UICorner = au.ElementsRadius
         }
 
         local av = au.Size or UDim2.new(0, 620, 0, 480)
@@ -12972,8 +12972,6 @@ do
         if au.Acrylic then
             au.AcrylicPaint = ak.AcrylicPaint {UseAcrylic = au.Acrylic}
         end
-
-        -- REMOVED RESIZE HANDLE (ax)
 
         local ay =
             al.NewRoundFrame(
@@ -13099,7 +13097,7 @@ do
             },
             {
                 al.NewRoundFrame(
-                    au.UICorner, -- APPLIED ROUNDING
+                    au.UICorner,
                     "Squircle",
                     {
                         Size = UDim2.new(1, -au.UIPadding / 2, 1, -au.UIPadding / 2),
@@ -13799,7 +13797,7 @@ do
                 au.CanResize = false
             else
                 if au.Resizable then
-                    au.CanResize = false -- FORCED OFF
+                    au.CanResize = false
                 end
             end
             an(au.UIElements.Main, 0.5, {Size = A and initialX or UDim2.new(1, -20, 1, -20)}, Enum.EasingStyle.Quint):Play(
@@ -14112,7 +14110,11 @@ do
 
         function au.Tab(C, F)
             F.Parent = au.UIElements.SideBar.Frame
-            return B.New(F, at.WindUI.UIScale)
+            local tabObj = B.New(F, at.WindUI.UIScale)
+            if tabObj and tabObj.Button and tabObj.Button:FindFirstChild("UICorner") then
+                tabObj.Button.UICorner.CornerRadius = UDim.new(0, au.ElementsRadius)
+            end
+            return tabObj
         end
         function au.SelectTab(C, F)
             B:SelectTab(F)
@@ -14121,7 +14123,7 @@ do
             return sectMod.New(F, au.UIElements.SideBar.Frame, au.Folder, at.WindUI.UIScale, au)
         end
         function au.IsResizable(C, F)
-            au.Resizable, au.CanResize = false, false -- FORCED OFF
+            au.Resizable, au.CanResize = false, false
         end
 
         function au.SetPanelBackground(C, F)
@@ -14362,8 +14364,6 @@ do
             return ar:New(H, au.UIElements.Main.Main.Topbar.Center)
         end
 
-        -- REMOVED RESIZER INPUT SIGNALS
-
         local lastClick, doubleClickThresh, doubleClickCount, lastPos = 0, 0.4, 0, nil
         l.Frame.MouseButton1Up:Connect(
             function()
@@ -14405,7 +14405,7 @@ do
                         function()
                             searchActive = false
                             if au.Resizable then
-                                au.CanResize = false -- FORCED OFF
+                                au.CanResize = false
                             end
                             an(az, 0.1, {ImageTransparency = 1}):Play()
                             az.Active = false
