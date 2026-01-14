@@ -12897,7 +12897,7 @@ do
             SideBarWidth = at.SideBarWidth or 210,
             Acrylic = at.Acrylic or false,
             IgnoreAlerts = at.IgnoreAlerts or false,
-            HidePanelBackground = false,
+            HidePanelBackground = true,
             AutoScale = at.AutoScale ~= false,
             OpenButton = at.OpenButton,
             Position = UDim2.new(0.5, 0, 0.5, 0),
