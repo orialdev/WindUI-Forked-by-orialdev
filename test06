@@ -12868,7 +12868,7 @@ do
                 Title = at.Title or "UI Library",
                 Author = at.Author,
                 Icon = at.Icon,
-                IconSize = at.IconSize or 28,
+                IconSize = at.IconSize or 24,
                 IconThemed = at.IconThemed,
                 IconRadius = at.IconRadius or 0,
                 Folder = at.Folder,
@@ -12878,22 +12878,23 @@ do
                 ShadowTransparency = at.ShadowTransparency or 0.7,
                 User = at.User or {},
                 Footer = at.Footer or {},
-                Topbar = at.Topbar or {Height = 44, ButtonsType = "Mac"},
+                Topbar = at.Topbar or {Height = 48, ButtonsType = "Default"},
                 Size = at.Size,
-                MinSize = at.MinSize or Vector2.new(640, 400),
-                MaxSize = at.MaxSize or Vector2.new(1200, 800),
+                MinSize = at.MinSize or Vector2.new(560, 350),
+                MaxSize = at.MaxSize or Vector2.new(850, 560),
                 TopBarButtonIconSize = at.TopBarButtonIconSize,
                 ToggleKey = at.ToggleKey,
-                ElementsRadius = at.ElementsRadius,
-                Radius = at.Radius or 12,
-                Transparent = at.Transparent or true,
-                HideSearchBar = at.HideSearchBar or false,
-                ScrollBarEnabled = at.ScrollBarEnabled or true,
-                SideBarWidth = at.SideBarWidth or 240,
-                Acrylic = at.Acrylic or true,
-                NewElements = at.NewElements or true,
+                ElementsRadius = at.ElementsRadius or 16,
+                Radius = at.Radius or 20,
+                Transparent = at.Transparent or false,
+                HideSearchBar = at.HideSearchBar ~= false,
+                ScrollBarEnabled = at.ScrollBarEnabled or false,
+                SideBarWidth = at.SideBarWidth or 220,
+                SideBarCollapsed = at.SideBarCollapsed or false,
+                Acrylic = at.Acrylic or false,
+                NewElements = at.NewElements or false,
                 IgnoreAlerts = at.IgnoreAlerts or false,
-                HidePanelBackground = at.HidePanelBackground or true,
+                HidePanelBackground = at.HidePanelBackground or false,
                 AutoScale = at.AutoScale ~= false,
                 OpenButton = at.OpenButton,
                 Position = UDim2.new(0.5, 0, 0.5, 0),
@@ -12926,8 +12927,8 @@ do
             au.UICorner = au.Radius
             au.TopBarButtonIconSize = au.TopBarButtonIconSize or (au.Topbar.ButtonsType == "Mac" and 11 or 16)
             au.ElementConfig = {
-                UIPadding = (au.NewElements and 10 or 13),
-                UICorner = au.ElementsRadius or (au.NewElements and 23 or 12)
+                UIPadding = 12,
+                UICorner = au.ElementsRadius
             }
             local av = au.Size or UDim2.new(0, 580, 0, 460)
             au.Size =
@@ -12938,7 +12939,7 @@ do
                 math.clamp(av.Y.Offset, au.MinSize.Y, au.MaxSize.Y)
             )
             if au.Topbar == {} then
-                au.Topbar = {Height = 44, ButtonsType = "Mac"}
+                au.Topbar = {Height = 48, ButtonsType = "Default"}
             end
             if not af:IsStudio() and au.Folder then
                 if not isfolder("WindUI/" .. au.Folder) then
@@ -13093,9 +13094,9 @@ do
                 {
                     Size = UDim2.new(
                         0,
-                        au.SideBarWidth,
+                        au.SideBarCollapsed and 0 or au.SideBarWidth,
                         1,
-                        au.User.Enabled and -au.Topbar.Height - 48 - (au.UIPadding * 2) or -au.Topbar.Height
+                        au.User.Enabled and -au.Topbar.Height - 42 - (au.UIPadding * 2) or -au.Topbar.Height
                     ),
                     Position = UDim2.new(0, 0, 0, au.Topbar.Height),
                     BackgroundTransparency = 1,
@@ -13194,7 +13195,7 @@ do
                             0,
                             (au.UIElements.SideBarContainer.AbsoluteSize.X) - (au.UIPadding / 2),
                             0,
-                            48 + (au.UIPadding)
+                            42 + (au.UIPadding)
                         ),
                         Position = UDim2.new(0, au.UIPadding / 2, 1, -(au.UIPadding / 2)),
                         AnchorPoint = Vector2.new(0, 1),
@@ -13249,7 +13250,7 @@ do
                                     {
                                         Image = GetUserThumb(),
                                         BackgroundTransparency = 1,
-                                        Size = UDim2.new(0, 48, 0, 48),
+                                        Size = UDim2.new(0, 42, 0, 42),
                                         ThemeTag = {
                                             BackgroundColor3 = "Text"
                                         },
@@ -13275,7 +13276,7 @@ do
                                             "TextLabel",
                                             {
                                                 Text = au.User.Anonymous and "Anonymous" or ah.LocalPlayer.DisplayName,
-                                                TextSize = 18,
+                                                TextSize = 17,
                                                 ThemeTag = {
                                                     TextColor3 = "Text"
                                                 },
@@ -13292,7 +13293,7 @@ do
                                             "TextLabel",
                                             {
                                                 Text = au.User.Anonymous and "anonymous" or ah.LocalPlayer.Name,
-                                                TextSize = 16,
+                                                TextSize = 15,
                                                 TextTransparency = .6,
                                                 ThemeTag = {
                                                     TextColor3 = "Text"
@@ -13339,7 +13340,7 @@ do
                     an(
                         au.UIElements.SideBarContainer,
                         .25,
-                        {Size = UDim2.new(0, au.SideBarWidth, 1, -au.Topbar.Height - 48 - (au.UIPadding * 2))},
+                        {Size = UDim2.new(au.UIElements.SideBarContainer.Size.X.Scale, au.UIElements.SideBarContainer.Size.X.Offset, 1, -au.Topbar.Height - 42 - (au.UIPadding * 2))},
                         Enum.EasingStyle.Quint,
                         Enum.EasingDirection.Out
                     ):Play()
@@ -13350,7 +13351,7 @@ do
                     an(
                         au.UIElements.SideBarContainer,
                         .25,
-                        {Size = UDim2.new(0, au.SideBarWidth, 1, -au.Topbar.Height)},
+                        {Size = UDim2.new(au.UIElements.SideBarContainer.Size.X.Scale, au.UIElements.SideBarContainer.Size.X.Offset, 1, -au.Topbar.Height)},
                         Enum.EasingStyle.Quint,
                         Enum.EasingDirection.Out
                     ):Play()
@@ -13563,7 +13564,7 @@ do
                         AutomaticSize = "XY",
                         Parent = au.UIElements.Main and au.UIElements.Main.Main.Topbar.Left.Title,
                         TextXAlignment = "Left",
-                        TextSize = 14,
+                        TextSize = 13,
                         LayoutOrder = 2,
                         ThemeTag = {
                             TextColor3 = "WindowTopbarAuthor"
@@ -13587,11 +13588,41 @@ do
                     AutomaticSize = "XY",
                     Name = "Title",
                     TextXAlignment = "Left",
-                    TextSize = 18,
+                    TextSize = 16,
                     ThemeTag = {
                         TextColor3 = "WindowTopbarTitle"
                     }
                 }
+            )
+            local sidebarToggleButton =
+                am(
+                "TextButton",
+                {
+                    Name = "SidebarToggle",
+                    Size = UDim2.new(0, au.Topbar.Height, 0, au.Topbar.Height),
+                    BackgroundTransparency = 1,
+                    Text = au.SideBarCollapsed and "▶" or "☰",
+                    TextSize = 26,
+                    FontFace = Font.new(al.Font, Enum.FontWeight.Bold),
+                    ThemeTag = {TextColor3 = "Text"},
+                    TextTransparency = 0,
+                    Parent = au.UIElements.Main.Main.Topbar.Left,
+                    LayoutOrder = 1,
+                    AutoButtonColor = false,
+                    ZIndex = 10
+                }
+            )
+            al.AddSignal(
+                sidebarToggleButton.MouseEnter,
+                function()
+                    an(sidebarToggleButton, 0.2, {TextTransparency = 0.35}):Play()
+                end
+            )
+            al.AddSignal(
+                sidebarToggleButton.MouseLeave,
+                function()
+                    an(sidebarToggleButton, 0.2, {TextTransparency = 0}):Play()
+                end
             )
             au.UIElements.Main =
                 am(
@@ -13769,7 +13800,10 @@ do
                                         "UIPadding",
                                         {
                                             PaddingTop = UDim.new(0, au.UIPadding),
-                                            PaddingLeft = UDim.new(0, au.UIPadding),
+                                            PaddingLeft = UDim.new(
+                                                0,
+                                                au.Topbar.ButtonsType == "Default" and au.UIPadding or au.UIPadding - 2
+                                            ),
                                             PaddingRight = UDim.new(0, 8),
                                             PaddingBottom = UDim.new(0, au.UIPadding)
                                         }
@@ -13780,6 +13814,43 @@ do
                     )
                 }
             )
+            task.spawn(
+                function()
+                    if au.Icon then
+                        local v =
+                            am(
+                            "Frame",
+                            {
+                                Size = UDim2.new(0, au.IconSize, 0, au.IconSize),
+                                BackgroundTransparency = 1,
+                                Parent = au.UIElements.Main.Main.Topbar.Left,
+                                LayoutOrder = 1
+                            }
+                        )
+                        p =
+                            al.Image(
+                            au.Icon,
+                            au.Title,
+                            au.IconRadius,
+                            au.Folder,
+                            "Window",
+                            true,
+                            au.IconThemed,
+                            "WindowTopbarIcon"
+                            )
+                        p.Parent = v
+                        p.Size = UDim2.new(0, au.IconSize, 0, au.IconSize)
+                        p.Position = UDim2.new(0.5, 0, 0.5, 0)
+                        p.AnchorPoint = Vector2.new(0.5, 0.5)
+                        au.OpenButtonMain:SetIcon(au.Icon)
+                        sidebarToggleButton.LayoutOrder = 2
+                        au.UIElements.Main.Main.Topbar.Left.Title.LayoutOrder = 3
+                    else
+                        sidebarToggleButton.LayoutOrder = 1
+                        au.UIElements.Main.Main.Topbar.Left.Title.LayoutOrder = 2
+                    end
+                end
+            )
             al.AddSignal(
                 au.UIElements.Main.Main.Topbar.Left:GetPropertyChangedSignal "AbsoluteSize",
                 function()
@@ -13788,7 +13859,7 @@ do
                         au.UIElements.Main.Main.Topbar.Right.UIListLayout.AbsoluteContentSize.X / at.WindUI.UIScale
                     u = au.UIElements.Main.Main.Topbar.Left.AbsoluteSize.X / at.WindUI.UIScale
                     if au.Topbar.ButtonsType ~= "Default" then
-                        u = u + v + au.UIPadding + 12
+                        u = u + v + au.UIPadding - 4
                     end
                     au.UIElements.Main.Main.Topbar.Center.Position =
                         UDim2.new(0, u + (au.UIPadding / at.WindUI.UIScale), 0.5, 0)
@@ -13803,7 +13874,7 @@ do
                         au.UIElements.Main.Main.Topbar.Left.Position =
                             UDim2.new(
                             0,
-                            (au.UIElements.Main.Main.Topbar.Right.AbsoluteSize.X / at.WindUI.UIScale) + au.UIPadding + 12,
+                            (au.UIElements.Main.Main.Topbar.Right.AbsoluteSize.X / at.WindUI.UIScale) + au.UIPadding - 4,
                             0,
                             0
                         )
@@ -13957,6 +14028,27 @@ do
                 )
                 return H
             end
+            function au.ToggleSideBar()
+                au.SideBarCollapsed = not au.SideBarCollapsed
+                local targetWidth = au.SideBarCollapsed and 0 or au.SideBarWidth
+                local userOffset = au.User.Enabled and -42 - (au.UIPadding * 2) or 0
+                an(
+                    au.UIElements.SideBarContainer,
+                    0.35,
+                    {
+                        Size = UDim2.new(0, targetWidth, 1, -au.Topbar.Height + userOffset)
+                    },
+                    Enum.EasingStyle.Quint,
+                    Enum.EasingDirection.Out
+                ):Play()
+                sidebarToggleButton.Text = au.SideBarCollapsed and "▶" or "☰"
+            end
+            al.AddSignal(
+                sidebarToggleButton.MouseButton1Click,
+                function()
+                    au:ToggleSideBar()
+                end
+            )
             local u =
                 al.Drag(
                 au.UIElements.Main,
@@ -13993,11 +14085,6 @@ do
                 )
             end
             au.OpenButtonMain = a.load "z".New(au)
-            task.spawn(
-                function()
-                    au.OpenButtonMain:SetIcon(au.Icon)
-                end
-            )
             function au.SetToggleKey(v, x)
                 au.ToggleKey = x
             end
@@ -14470,7 +14557,7 @@ do
             function au.SetPanelBackground(C, F)
                 if typeof(F) == "boolean" then
                     au.HidePanelBackground = F
-                    au.UIElements.MainBar.Background.Visible = not F
+                    au.UIElements.MainBar.Background.Visible = F
                     if B then
                         for G, H in next, B.Containers do
                             H.ScrollingFrame.UIPadding.PaddingTop = UDim.new(0, au.HidePanelBackground and 20 or 10)
