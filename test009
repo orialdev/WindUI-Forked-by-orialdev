@@ -12889,8 +12889,8 @@ do
             MaxSize = at.MaxSize or Vector2.new(900, 600),
             TopBarButtonIconSize = at.TopBarButtonIconSize or 15,
             ToggleKey = at.ToggleKey,
-            ElementsRadius = 14, -- ROUNDED ELEMENTS
-            Radius = 14, -- ROUNDED WINDOW
+            ElementsRadius = 25, -- INTERNAL ELEMENTS MORE ROUNDED
+            Radius = 6, -- PANEL BACKGROUND MORE SQUARE
             Transparent = at.Transparent or false,
             HideSearchBar = at.HideSearchBar ~= false,
             ScrollBarEnabled = at.ScrollBarEnabled or false,
@@ -12932,7 +12932,7 @@ do
 
         au.ElementConfig = {
             UIPadding = 14,
-            UICorner = au.ElementsRadius -- ROUNDED SIDEBAR TABS/ELEMENTS
+            UICorner = au.ElementsRadius 
         }
 
         local av = au.Size or UDim2.new(0, 620, 0, 480)
@@ -12973,7 +12973,8 @@ do
             au.AcrylicPaint = ak.AcrylicPaint {UseAcrylic = au.Acrylic}
         end
 
-        -- REMOVED: Resizer Handle Frame (ax) 
+        -- REMOVED: Resize Handle Frame (ax) 
+        -- REMOVED: Resize Bar Frame (l)
 
         local ay =
             al.NewRoundFrame(
@@ -13170,7 +13171,7 @@ do
                 },
                 {
                     al.NewRoundFrame(
-                        au.UICorner - 2,
+                        au.ElementsRadius - 2,
                         "SquircleOutline",
                         {
                             Size = UDim2.new(1, 0, 1, 0),
@@ -13192,7 +13193,7 @@ do
                         }
                     ),
                     al.NewRoundFrame(
-                        au.UICorner - 2,
+                        au.ElementsRadius - 2,
                         "Squircle",
                         {
                             Size = UDim2.new(1, 0, 1, 0),
@@ -13383,33 +13384,6 @@ do
             )
         end
 
-        local l =
-            al.NewRoundFrame(
-            99,
-            "Squircle",
-            {
-                ImageTransparency = .85,
-                ImageColor3 = Color3.new(1, 1, 1),
-                Size = UDim2.new(0, 0, 0, 4),
-                Position = UDim2.new(0.5, 0, 1, 6),
-                AnchorPoint = Vector2.new(0.5, 0)
-            },
-            {
-                am(
-                    "TextButton",
-                    {
-                        Size = UDim2.new(1, 20, 1, 20),
-                        BackgroundTransparency = 1,
-                        Position = UDim2.new(0.5, 0, 0.5, 0),
-                        AnchorPoint = Vector2.new(0.5, 0.5),
-                        Active = true,
-                        ZIndex = 99,
-                        Name = "Frame"
-                    }
-                )
-            }
-        )
-
         function createAuthor(m)
             return am(
                 "TextLabel",
@@ -13472,8 +13446,7 @@ do
                         ThemeTag = {ImageColor3 = "WindowBackground"}
                     },
                     {
-                        g,
-                        l
+                        g
                     }
                 ),
                 aw,
@@ -13677,14 +13650,9 @@ do
         local u =
             al.Drag(
             au.UIElements.Main,
-            {au.UIElements.Main.Main.Topbar, l.Frame},
+            {au.UIElements.Main.Main.Topbar},
             function(u, v)
                 if not au.Closed then
-                    if u and v == l.Frame then
-                        an(l, .1, {ImageTransparency = .4}):Play()
-                    else
-                        an(l, .2, {ImageTransparency = .85}):Play()
-                    end
                     au.Position = au.UIElements.Main.Position
                     au.Dragging = u
                 end
@@ -13889,12 +13857,8 @@ do
                     task.spawn(
                         function()
                             task.wait(.4)
-                            an(l, .5, {Size = UDim2.new(0, 140, 0, 3), ImageTransparency = .8}, Enum.EasingStyle.Quint):Play(
-
-                            )
                             u:Set(true)
                             if au.Resizable then
-                                -- REMOVED RESIZE TWEENING
                                 au.CanResize = false
                             end
                         end
@@ -13956,14 +13920,7 @@ do
                 end
             end
             an(aA, 0.3, {ImageTransparency = 1}, Enum.EasingStyle.Quint):Play()
-            an(
-                l,
-                .3,
-                {Size = UDim2.new(0, 0, 0, 4), ImageTransparency = 1},
-                Enum.EasingStyle.Quint,
-                Enum.EasingDirection.InOut
-            ):Play()
-            -- REMOVED RESIZE ICON TWEEN
+            
             u:Set(false)
             au.CanResize = false
 
@@ -14117,7 +14074,6 @@ do
 
         function au.Tab(C, F)
             F.Parent = au.UIElements.SideBar.Frame
-            -- SIDEBAR TABS WILL NOW BE ROUNDED ACCORDING TO ElementConfig.UICorner (14)
             return B.New(F, at.WindUI.UIScale)
         end
         function au.SelectTab(C, F)
@@ -14127,7 +14083,7 @@ do
             return sectMod.New(F, au.UIElements.SideBar.Frame, au.Folder, at.WindUI.UIScale, au)
         end
         function au.IsResizable(C, F)
-            au.Resizable, au.CanResize = false, false -- PERMANENTLY OFF
+            au.Resizable, au.CanResize = false, false 
         end
 
         function au.SetPanelBackground(C, F)
@@ -14367,32 +14323,6 @@ do
             end
             return ar:New(H, au.UIElements.Main.Main.Topbar.Center)
         end
-
-        -- REMOVED: Resize mouse input listeners 
-
-        local lastClick, doubleClickThresh, doubleClickCount, lastPos = 0, 0.4, 0, nil
-        l.Frame.MouseButton1Up:Connect(
-            function()
-                local now, curPos = tick(), au.Position
-                doubleClickCount = doubleClickCount + 1
-                if doubleClickCount == 1 then
-                    lastClick, lastPos = now, curPos
-                    task.spawn(
-                        function()
-                            task.wait(doubleClickThresh)
-                            if doubleClickCount == 1 then
-                                doubleClickCount, lastPos = 0, nil
-                            end
-                        end
-                    )
-                elseif doubleClickCount == 2 then
-                    if now - lastClick <= doubleClickThresh and curPos == lastPos then
-                        au:SetToTheCenter()
-                    end
-                    doubleClickCount, lastPos, lastClick = 0, nil, 0
-                end
-            end
-        )
 
         if not au.HideSearchBar then
             local searchMod, searchActive = a.load "Z", false
