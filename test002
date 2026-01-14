@@ -12896,7 +12896,6 @@ do
             ScrollBarEnabled = at.ScrollBarEnabled or false,
             SideBarWidth = at.SideBarWidth or 210,
             Acrylic = at.Acrylic or false,
-            NewElements = at.NewElements or false,
             IgnoreAlerts = at.IgnoreAlerts or false,
             HidePanelBackground = at.HidePanelBackground or false,
             AutoScale = at.AutoScale ~= false,
@@ -12932,8 +12931,8 @@ do
         au.UICorner = au.Radius
 
         au.ElementConfig = {
-            UIPadding = (au.NewElements and 11 or 14),
-            UICorner = au.ElementsRadius or (au.NewElements and 20 or 10)
+            UIPadding = 14,
+            UICorner = au.ElementsRadius or 10
         }
 
         local av = au.Size or UDim2.new(0, 620, 0, 480)
@@ -13135,17 +13134,6 @@ do
                         ImageTransparency = 0.98,
                         Name = "Background",
                         Visible = not au.HidePanelBackground
-                    },
-                    {
-                        am(
-                            "UIStroke",
-                            {
-                                Thickness = 1,
-                                Transparency = 0.92,
-                                Color = Color3.fromRGB(255, 255, 255),
-                                ApplyStrokeMode = "Border"
-                            }
-                        )
                     }
                 ),
                 am(
@@ -13647,7 +13635,7 @@ do
             function()
                 local u = au.UIElements.Main.Main.Topbar.Left.AbsoluteSize.X / at.WindUI.UIScale
                 local v = au.UIElements.Main.Main.Topbar.Right.UIListLayout.AbsoluteContentSize.X / at.WindUI.UIScale
-                
+
                 au.UIElements.Main.Main.Topbar.Center.Position =
                     UDim2.new(0, u + (au.UIPadding / at.WindUI.UIScale), 0.5, 0)
                 au.UIElements.Main.Main.Topbar.Center.Size =
@@ -13656,17 +13644,7 @@ do
         )
 
         function au.CreateTopbarButton(u, v, x, z, A, B, C, F)
-            local G =
-                al.Image(
-                x,
-                x,
-                0,
-                au.Folder,
-                "WindowTopbarIcon",
-                true,
-                B,
-                "WindowTopbarButtonIcon"
-            )
+            local G = al.Image(x, x, 0, au.Folder, "WindowTopbarIcon", true, B, "WindowTopbarButtonIcon")
             G.Size = UDim2.new(0, F or au.TopBarButtonIconSize, 0, F or au.TopBarButtonIconSize)
             G.AnchorPoint = Vector2.new(0.5, 0.5)
             G.Position = UDim2.new(0.5, 0, 0.5, 0)
@@ -13850,7 +13828,9 @@ do
                     au.CanResize = true
                 end
             end
-            an(au.UIElements.Main, 0.5, {Size = A and initialX or UDim2.new(1, -20, 1, -20)}, Enum.EasingStyle.Quint):Play()
+            an(au.UIElements.Main, 0.5, {Size = A and initialX or UDim2.new(1, -20, 1, -20)}, Enum.EasingStyle.Quint):Play(
+
+            )
             an(
                 au.UIElements.Main,
                 0.5,
@@ -13911,14 +13891,20 @@ do
                         Enum.EasingStyle.Quint
                     ):Play()
                     if au.UIElements.BackgroundGradient then
-                        an(au.UIElements.BackgroundGradient, 0.3, {ImageTransparency = 0}, Enum.EasingStyle.Quint):Play()
+                        an(au.UIElements.BackgroundGradient, 0.3, {ImageTransparency = 0}, Enum.EasingStyle.Quint):Play(
+
+                        )
                     end
-                    an(au.UIElements.Main.Background, 0.5, {Size = UDim2.new(1, 0, 1, 0)}, Enum.EasingStyle.Quint):Play()
+                    an(au.UIElements.Main.Background, 0.5, {Size = UDim2.new(1, 0, 1, 0)}, Enum.EasingStyle.Quint):Play(
+
+                    )
                     if g then
                         if g:IsA "VideoFrame" then
                             g.Visible = true
                         else
-                            an(g, 0.3, {ImageTransparency = au.BackgroundImageTransparency}, Enum.EasingStyle.Quint):Play()
+                            an(g, 0.3, {ImageTransparency = au.BackgroundImageTransparency}, Enum.EasingStyle.Quint):Play(
+
+                            )
                         end
                     end
                     if au.OpenButtonMain and au.IsOpenButtonEnabled then
@@ -13929,7 +13915,9 @@ do
                     task.spawn(
                         function()
                             task.wait(.4)
-                            an(l, .5, {Size = UDim2.new(0, 140, 0, 3), ImageTransparency = .8}, Enum.EasingStyle.Quint):Play()
+                            an(l, .5, {Size = UDim2.new(0, 140, 0, 3), ImageTransparency = .8}, Enum.EasingStyle.Quint):Play(
+
+                            )
                             u:Set(true)
                             if au.Resizable then
                                 an(ax.ImageLabel, .5, {ImageTransparency = .8}, Enum.EasingStyle.Quint):Play()
@@ -14371,13 +14359,21 @@ do
                             Title = "Close",
                             Content = "Are you sure you want to exit? Any unsaved changes may be lost.",
                             Buttons = {
-                                {Title = "Stay", Callback = function()
+                                {
+                                    Title = "Stay",
+                                    Callback = function()
                                         isClosing = false
-                                    end, Variant = "Secondary"},
-                                {Title = "Exit", Callback = function()
+                                    end,
+                                    Variant = "Secondary"
+                                },
+                                {
+                                    Title = "Exit",
+                                    Callback = function()
                                         isClosing = false
                                         au:Destroy()
-                                    end, Variant = "Primary"}
+                                    end,
+                                    Variant = "Primary"
+                                }
                             }
                         }
                     else
@@ -14431,12 +14427,12 @@ do
                  then
                     local currentScale = au:GetUIScale()
                     local H = (G.Position - initialInputPosition) / currentScale
-                    
+
                     local newWidth = math.clamp(initialSize.X / currentScale + H.X * 2, au.MinSize.X, au.MaxSize.X)
                     local newHeight = math.clamp(initialSize.Y / currentScale + H.Y * 2, au.MinSize.Y, au.MaxSize.Y)
-                    
+
                     local J = UDim2.new(0, newWidth, 0, newHeight)
-                    
+
                     au.UIElements.Main.Size = J
                     au.Size = J
                 end
@@ -14509,6 +14505,7 @@ do
         return au
     end
 end
+
 end
 
 local aa = game:GetService "RunService"
