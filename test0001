@@ -12877,7 +12877,7 @@ do
             IconThemed = at.IconThemed,
             IconRadius = at.IconRadius or 6,
             Folder = at.Folder,
-            Resizable = false, -- DISABLED RESIZER
+            Resizable = false, -- DISABLED PER REQUEST
             Background = at.Background,
             BackgroundImageTransparency = at.BackgroundImageTransparency or 0,
             ShadowTransparency = at.ShadowTransparency or 0.6,
@@ -12889,8 +12889,8 @@ do
             MaxSize = at.MaxSize or Vector2.new(900, 600),
             TopBarButtonIconSize = at.TopBarButtonIconSize or 15,
             ToggleKey = at.ToggleKey,
-            ElementsRadius = 25, -- INTERNAL ELEMENTS MORE ROUNDED
-            Radius = 6, -- PANEL BACKGROUND MORE SQUARE
+            ElementsRadius = 25, -- ROUND INTERNAL ELEMENTS
+            Radius = 6, -- SQUARE-ISH PANEL
             Transparent = at.Transparent or false,
             HideSearchBar = at.HideSearchBar ~= false,
             ScrollBarEnabled = at.ScrollBarEnabled or false,
@@ -12909,7 +12909,7 @@ do
             Parent = at.Parent,
             Destroyed = false,
             IsFullscreen = false,
-            CanResize = false, -- DISABLED RESIZER
+            CanResize = false, -- DISABLED PER REQUEST
             IsOpenButtonEnabled = true,
             CurrentConfig = nil,
             ConfigManager = nil,
@@ -12920,7 +12920,7 @@ do
             OnCloseCallback = nil,
             OnDestroyCallback = nil,
             IsPC = false,
-            Gap = 6,
+            Gap = 8,
             TopBarButtons = {},
             AllElements = {},
             ElementConfig = {},
@@ -12973,8 +12973,7 @@ do
             au.AcrylicPaint = ak.AcrylicPaint {UseAcrylic = au.Acrylic}
         end
 
-        -- REMOVED: Resize Handle Frame (ax) 
-        -- REMOVED: Resize Bar Frame (l)
+        -- [REMOVED: ax and l handle logic] --
 
         local ay =
             al.NewRoundFrame(
@@ -13100,7 +13099,7 @@ do
             },
             {
                 al.NewRoundFrame(
-                    au.UICorner,
+                    au.ElementsRadius, -- ROUNDED SUB-PANEL
                     "Squircle",
                     {
                         Size = UDim2.new(1, -au.UIPadding / 2, 1, -au.UIPadding / 2),
@@ -13171,7 +13170,7 @@ do
                 },
                 {
                     al.NewRoundFrame(
-                        au.ElementsRadius - 2,
+                        au.ElementsRadius, -- USER CONTAINER ROUNDED
                         "SquircleOutline",
                         {
                             Size = UDim2.new(1, 0, 1, 0),
@@ -13193,7 +13192,7 @@ do
                         }
                     ),
                     al.NewRoundFrame(
-                        au.ElementsRadius - 2,
+                        au.ElementsRadius, 
                         "Squircle",
                         {
                             Size = UDim2.new(1, 0, 1, 0),
@@ -13439,7 +13438,7 @@ do
                     "Squircle",
                     {
                         ImageTransparency = 1,
-                        Size = UDim2.new(1, 0, 1, -240),
+                        Size = UDim2.new(1, 0, 1, 0), -- FILLED CONTAINER
                         AnchorPoint = Vector2.new(0.5, 0.5),
                         Position = UDim2.new(0.5, 0, 0.5, 0),
                         Name = "Background",
@@ -13599,7 +13598,7 @@ do
 
             local H =
                 al.NewRoundFrame(
-                au.UICorner - 6,
+                au.ElementsRadius, -- ROUND TOPBAR BUTTONS
                 "Squircle",
                 {
                     Size = UDim2.new(0, 32, 0, 32),
@@ -13613,7 +13612,7 @@ do
                 },
                 {
                     al.NewRoundFrame(
-                        au.UICorner - 6,
+                        au.ElementsRadius,
                         "SquircleOutline",
                         {
                             Size = UDim2.new(1, 0, 1, 0),
@@ -13650,7 +13649,7 @@ do
         local u =
             al.Drag(
             au.UIElements.Main,
-            {au.UIElements.Main.Main.Topbar},
+            {au.UIElements.Main.Main.Topbar}, -- DRAGGING ONLY FROM TOPBAR
             function(u, v)
                 if not au.Closed then
                     au.Position = au.UIElements.Main.Position
