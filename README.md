@@ -1,7 +1,5 @@
 # WindUI (Forked)
 
-A powerful and modern Roblox UI library featuring tabs, sections, key systems, configuration saving, and theming.
-
 ---
 
 ## Installation
