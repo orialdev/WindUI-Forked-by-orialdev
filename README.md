@@ -1,7 +1,5 @@
 # WindUI (Forked)
 
----
-
 ## Installation
 
 Load the library into your script:
